@@ -24,7 +24,7 @@ for polinomio in vetor_polinomios:
             continue
         print("{}.x^({}) + ".format(coeficiente, index), end="")
 
-    print("A quantidade das possíveis raízes são:")
+    print("A quantidade das possíveis raízes reais são:")
     positivas, negativas, complexas = estima_qraizes(polinomio)
     print("Raizes positivas: {}".format(positivas))
     print("Raizes negativas: {}".format(negativas))
@@ -35,9 +35,9 @@ for polinomio in vetor_polinomios:
     print("Raio que tem todas as raizes = ", localiza_raio_raizes_2(polinomio))
 
     print("As raízes são: ")
-    raizes = metodo_bairstow(polinomio, -raio, raio, grau, precisao)
+    raizes = metodo_bairstow(polinomio, raio, -raio, grau, precisao)
     for index, raiz in enumerate(raizes):
-        print(f"Raiz {index+1} = {raiz:.3f}")
+        print("Raiz {} = {}".format(index+1, raiz))
 
     fim = time.time()
     print(f"Tempo de execução = {fim-inicio}")

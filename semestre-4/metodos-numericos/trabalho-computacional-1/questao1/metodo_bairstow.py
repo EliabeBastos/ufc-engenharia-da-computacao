@@ -107,4 +107,4 @@ def metodo_bairstow(vetor_coeficientes, r, s, grau, epsilon):
         raizes[id_raiz] = (-1*vetor_coeficientes[0])/vetor_coeficientes[1]
         ''' print("Raiz = ", raizes[id_raiz]) '''
     raizes.pop()
-    return raizes
+    return [-raiz for raiz in raizes]
