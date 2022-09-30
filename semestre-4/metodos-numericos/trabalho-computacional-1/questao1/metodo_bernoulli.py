@@ -1,68 +1,55 @@
-def metodo_bernoulli(vetor_coeficientes):
-    variacoesFuncaoMaisX = encontrar_variacao_de_sinal(vetor_coeficientes)
-    variacoesFuncaoMenosX = encontrar_variacao_de_sinal(
-        funcao_menos_x(vetor_coeficientes))
-
-    possibilidadesPositivas = encontrar_possiveis_quantidades_raizes(
-        variacoesFuncaoMaisX)
-    possibilidadesNegativas = encontrar_possiveis_quantidades_raizes(
-        variacoesFuncaoMenosX)
-
-    return criando_dicionario(possibilidadesNegativas, possibilidadesPositivas)
-
-
-def encontrar_variacao_de_sinal(vetor_coeficientes):
-    variacoes = 0
-    for index, coeficiente in enumerate(vetor_coeficientes):
-        if (index == 0):
-            coeficienteAnterior = coeficiente
-            continue
-        if (coeficiente * coeficienteAnterior < 0):
-            variacoes += 1
-        coeficienteAnterior = coeficiente
-    return variacoes
-
-
-def encontrar_possiveis_quantidades_raizes(variacoes):
-    possibilidades = []
-    inteiroPar = 0
-    while (variacoes - inteiroPar > 0):
-        possibilidades.append(variacoes - inteiroPar)
-        inteiroPar += 2
-    return possibilidades
-
-
-def funcao_menos_x(vetor_coeficientes):
-    funcao_menos_x = []
-
-    for index, coeficiente in enumerate(vetor_coeficientes):
-        if (index % 2 != 0):
-            funcao_menos_x.append(-coeficiente)
+def estima_qraizes(vet_coef):
+    quantidadeVariacoes = 0
+    i = 0
+    j = 1
+    while i < len(vet_coef)-1 and j < len(vet_coef):
+        if vet_coef[i]*vet_coef[j] < 0:
+            quantidadeVariacoes += 1
+            i = i+1
+            j = j+1
+        elif vet_coef[i]*vet_coef[j] == 0:
+            if vet_coef[j] == 0:
+                j = j+1
+            else:
+                i = i+1
         else:
-            funcao_menos_x.append(coeficiente)
+            i = i+1
+            j = j+1
 
-    return funcao_menos_x
+    raizesPositivas = []
+    for i in range(0, quantidadeVariacoes+1):
+        if (quantidadeVariacoes - i) % 2 == 0:
+            raizesPositivas.append(i)
 
+    quantidadeVariacoes = 0
+    i = 0
+    j = 1
+    for k in range(0, len(vet_coef)):
+        vet_coef[k] = vet_coef[k]*((-1)**k)
 
-def criando_dicionario(possibilidadesNegativas, possibilidadesPositivas):
-    indexMaior = max(len(possibilidadesNegativas),
-                     len(possibilidadesPositivas)) - 1
+    while i < len(vet_coef)-1 and j < len(vet_coef):
+        if vet_coef[i]*vet_coef[j] < 0:
+            quantidadeVariacoes += 1
+            i = i+1
+            j = j+1
+        elif vet_coef[i]*vet_coef[j] == 0:
+            if vet_coef[j] == 0:
+                j = j+1
+            else:
+                i = i+1
+        else:
+            i = i+1
+            j = j+1
 
-    try:
-        possibilidadesNegativas[indexMaior]
-    except:
-        while len(possibilidadesNegativas) <= indexMaior:
-            possibilidadesNegativas.append([])
+    raizesNegativas = []
+    for i in range(0, quantidadeVariacoes+1):
+        if (quantidadeVariacoes - i) % 2 == 0:
+            raizesNegativas.append(i)
 
-    try:
-        possibilidadesPositivas[indexMaior]
-    except:
-        while len(possibilidadesNegativas) <= indexMaior:
-            possibilidadesPositivas.append([])
+    raizesComplexas = []
+    grau = len(vet_coef)-1
+    for i in raizesPositivas:
+        for j in raizesNegativas:
+            raizesComplexas.append(grau - i - j)
 
-    possiveisQuantidadeRaizes = []
-    for positivas, negativas in zip(possibilidadesNegativas, possibilidadesPositivas):
-        dicionario = {"positivas": positivas, "negativas": negativas}
-        possiveisQuantidadeRaizes.append(dicionario)
-
-    return possiveisQuantidadeRaizes
+    return raizesPositivas, raizesNegativas, raizesComplexas
